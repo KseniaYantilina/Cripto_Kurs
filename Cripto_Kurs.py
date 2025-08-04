@@ -1,5 +1,6 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import *
+from tkinter import  messagebox as mb
+from tkinter import ttk
 import requests
 
 # Настройки API
@@ -31,39 +32,43 @@ def show_exchange_rate():
     currency = currency_combobox.get()
 
     if not crypto_id or not currency:
-        messagebox.showerror("Ошибка", "Выберите криптовалюту и валюту!")
+        mb.showerror("Ошибка", "Выберите криптовалюту и валюту!")
         return
 
     data = fetch_crypto_data(crypto_id, currency)
 
     if not data or crypto_id not in data:
-        messagebox.showerror("Ошибка", "Не удалось получить данные!")
+        mb.showerror("Ошибка", "Не удалось получить данные!")
         return
 
     rate = data[crypto_id][currency]
-    messagebox.showinfo(
-        "Курс обмена",
-        f"1 {crypto_id.capitalize()} = {rate} {currency.upper()}"
-    )
+    mb.showinfo("Курс обмена", f"1 {crypto_id.capitalize()} = {rate} {currency.upper()}")
 
+cur = {
+    'rub': 'Российский рубль',
+    'usd': 'Американский доллар',
+    'eur': 'Евро',
+    'jpy': 'Японская йена',
+    'cny': 'Китайский юань',
+       }
 
 # Создание графического интерфейса
-root = tk.Tk()
-root.title("Курсы криптовалют")
-root.geometry("400x200")
+window = Tk()
+window.title("Курсы криптовалют")
+window.geometry("400x200")
 
 # Выбор криптовалюты
-tk.Label(root, text="Выберите криптовалюту:").pack(pady=5)
-crypto_combobox = ttk.Combobox(root, values=CRYPTO_IDS, state="readonly")
+Label(text="Выберите криптовалюту:").pack(pady=5)
+crypto_combobox = ttk.Combobox(values=CRYPTO_IDS, state="readonly")
 crypto_combobox.pack(pady=5)
 
 # Выбор валюты
-tk.Label(root, text="Выберите валюту:").pack(pady=5)
-currency_combobox = ttk.Combobox(root, values=CURRENCIES, state="readonly")
+Label(text="Выберите валюту:").pack(pady=5)
+currency_combobox = ttk.Combobox(values=CURRENCIES, state="readonly")
 currency_combobox.pack(pady=5)
 
 # Кнопка для показа курса
-show_button = tk.Button(root, text="Показать курс", command=show_exchange_rate)
+show_button = Button(text="Показать курс", command=show_exchange_rate)
 show_button.pack(pady=10)
 
-root.mainloop()
+window.mainloop()
