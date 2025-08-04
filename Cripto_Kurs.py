@@ -3,13 +3,13 @@ from tkinter import messagebox as mb
 from tkinter import ttk
 import requests
 
-# Настройки API
+"""Настройки API"""
 API_URL = "https://api.coingecko.com/api/v3/simple/price"
 CRYPTO_IDS = ["bitcoin", "ethereum", "tether", "binancecoin", "solana",
               "ripple", "cardano", "dogecoin", "polkadot", "polygon"]
 CURRENCIES = ["rub", "usd", "eur", "cny", "jpy"]
 
-# Словарь с названиями валют
+"""Словарь с названиями валют"""
 CURRENCY_NAMES = {
     'rub': 'Российский рубль',
     'usd': 'Американский доллар',
