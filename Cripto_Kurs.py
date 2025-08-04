@@ -18,17 +18,16 @@ CURRENCY_NAMES = {
     'cny': 'Китайский юань',
 }
 
-
 def update_cry_label(event):
     """Обновление метки выбранной криптовалюты"""
     selected = crypto_combobox.get()
-    cry_label.config(text=f"Выбрано: {selected.capitalize()}")
+    cry_label.config(text=selected.capitalize())
 
 
 def update_cur_label(event):
     """Обновление метки выбранной валюты"""
     selected = currency_combobox.get()
-    cur_label.config(text=f"Выбрано: {CURRENCY_NAMES.get(selected, selected)}")
+    cur_label.config(text=f"Валюта: {CURRENCY_NAMES.get(selected, selected)}")
 
 
 def fetch_crypto_data(crypto_id, currency):
@@ -36,7 +35,7 @@ def fetch_crypto_data(crypto_id, currency):
     params = {
         "ids": crypto_id,
         "vs_currencies": currency,
-        "precision": 6  # Увеличена точность до 6 знаков
+        "precision": 3  # Точность отображения - 3 знака после запятой
     }
     try:
         response = requests.get(API_URL, params=params)
@@ -74,16 +73,17 @@ def show_exchange_rate():
     )
 
 
-# Создание графического интерфейса
+    """Создаем графический интерфейс"""
 window = Tk()
 window.title("Курсы криптовалют")
 window.geometry("450x300")
+window.configure(bg='pink')
 
 # Стилизация
 style = ttk.Style()
 style.configure('TCombobox', padding=5)
-style.configure('TLabel', font=('Arial', 10))
-style.configure('TButton', font=('Arial', 10))
+style.configure('TLabel',background='violet', font=('Arial', 10))
+style.configure('TButton', background='green', font=('Arial', 10))
 
 # Выбор криптовалюты
 ttk.Label(window, text="Выберите криптовалюту:").pack(pady=5)
@@ -91,7 +91,7 @@ crypto_combobox = ttk.Combobox(window, values=CRYPTO_IDS, state="readonly")
 crypto_combobox.pack(pady=5)
 crypto_combobox.bind("<<ComboboxSelected>>", update_cry_label)
 
-cry_label = ttk.Label(window, text="Ничего не выбрано")
+cry_label = ttk.Label()
 cry_label.pack(pady=5)
 
 # Выбор валюты
@@ -100,7 +100,7 @@ currency_combobox = ttk.Combobox(window, values=CURRENCIES, state="readonly")
 currency_combobox.pack(pady=5)
 currency_combobox.bind("<<ComboboxSelected>>", update_cur_label)  # Исправлено: привязка к currency_combobox
 
-cur_label = ttk.Label(window, text="Ничего не выбрано")
+cur_label = ttk.Label()
 cur_label.pack(pady=5)
 
 # Кнопка для показа курса
